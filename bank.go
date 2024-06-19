@@ -1,47 +1,44 @@
 package main
 
-import "fmt"
+import (
+	bal "bank/balance"
+	opt "bank/presentor"
+	"fmt"
+)
 
 func main() {
+	var choice int
+	//var accountBalance float64 = 1000
+
+	fmt.Println("Welcome to the Bank...")
+
 	for {
-		fmt.Println("1. Check Account Balance")
-		fmt.Println("2. Deposit")
-		fmt.Println("3. Withdraw")
-		fmt.Println("4. Exit")
-		var choice int
-		var accountBalance float64 = 1000
+		opt.PresentOptions()
 		fmt.Scan(&choice)
 		if choice == 1 {
-			fmt.Println("Your Account Balance is : ", accountBalance)
+			initialBalance, err := bal.ReadBalanceFromFile()
+			if err != nil {
+				fmt.Println("Error in the file: ", err)
+				return
+			}
+			fmt.Println("the Account Balance is: ", initialBalance)
 		} else if choice == 2 {
-			var depositAmount float64
-			fmt.Println("Deposit Amount : ")
-			fmt.Scan(&depositAmount)
 
-			if depositAmount <= 0 {
-				fmt.Println("Incorrect Number, The number cannot be or equal to 0")
+			depositAmount, err := bal.DepositAmountBank()
+			if err != nil {
+				fmt.Println("Error in processing transaction: ", err)
 				continue
 			}
+			fmt.Println("The Total Balance is: ", depositAmount)
 
-			accountBalance += depositAmount
-			fmt.Println("Your Account Balance is : ", accountBalance)
 		} else if choice == 3 {
-			var withdrawalAmount float64
-			fmt.Println("Withdrawal Amount : ")
-			fmt.Scan(&withdrawalAmount)
+			withdrawalAmount, err := bal.WithdrawAmountBank()
 
-			if withdrawalAmount <= 0 {
-				fmt.Println("Incorrect Number, The number cannot be or equal to 0")
-				continue
+			if err != nil {
+				fmt.Println("Error in processing the transaction: ", err)
 			}
 
-			if withdrawalAmount >= accountBalance {
-				fmt.Println("Withdrawal Amount exceeds your Account Balance...")
-				continue
-			}
-
-			accountBalance -= withdrawalAmount
-			fmt.Println("Your Account Balance is : ", accountBalance)
+			fmt.Println("The remaining balance is: ", withdrawalAmount)
 		} else {
 			fmt.Println("GoodBye !")
 			break
