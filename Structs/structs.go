@@ -14,6 +14,17 @@ func main() {
 
 	appUser, err := user.New(userFirstName, userLastName, userBirthDate)
 
+	adminUser := user.NewAdmin("test@gmail.com", "test123")
+
+	adminUser.User.OututUser()
+	adminUser.User.ClearUser()
+	adminUser.User.OututUser()
+
+	/* We can also use below code replacing the above code but only when we use only User instead of User User inside the Admin struct
+	adminUser.User.OututUser()
+	adminUser.User.ClearUser()
+	adminUser.User.OututUser()
+	*/
 	if err != nil {
 		fmt.Println(err)
 		return
